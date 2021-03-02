@@ -10,10 +10,42 @@
     <style>
         body {
             font-family: 'Arial', 'sans-serif';
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
     <h1>POC - RUG</h1>
+
+    <section>
+        <h2>Flooring</h2>
+
+        <p>
+            <small>Adding pattern to canvas</small>
+        </p>
+
+        <canvas id="canvas" width="1200" height="600"></canvas>
+    </section>
+
+    <script>
+        createFirstCanvas();
+
+        function createFirstCanvas() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const img = new Image();
+            img.src = 'https://mdn.mozillademos.org/files/222/Canvas_createpattern.png';
+            img.onload = function() {
+                const pattern = ctx.createPattern(img, 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.fillRect(0, 0, 1200, 600);
+            };
+        }
+    </script>
 </body>
 </html>
