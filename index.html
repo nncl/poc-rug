@@ -13,8 +13,23 @@
             text-align: center;
         }
 
-        canvas {
+        canvas,
+        svg {
             max-width: 100%;
+        }
+
+        #rectangle-border {
+            width: 1200px;
+            max-width: 100%;
+            height: 600px;
+
+            display: inline-block;
+
+            border: 21px solid transparent;
+            border-image: url("img/border.png") 21 round round;
+            /*border-image: url("https://mdn.mozillademos.org/files/222/Canvas_createpattern.png") 21 round round;*/
+            /*border-image-repeat: repeat;*/
+            /*border-image-slice: 20 20 20 20;*/
         }
     </style>
 </head>
@@ -36,6 +51,28 @@
         </div>
 
         <canvas id="canvas" width="1200" height="600"></canvas>
+    </section>
+
+    <section>
+        <h2>Border</h2>
+
+        <p>
+            <small>Clean rectangle with custom border</small>
+        </p>
+
+        <div id="rectangle-border"></div>
+
+        <p>
+            <small>With SVG:</small>
+        </p>
+
+        <svg width="1200" height="600" style="background-image: url('img/pattern.png');">
+            <rect width="1158"
+                  height="558"
+                  x="21"
+                  y="21"
+                  style="fill: white; stroke-width: 30; stroke: transparent" />
+        </svg>
     </section>
 
     <script>
