@@ -35,26 +35,32 @@
 
     <section>
         <div class="row">
-            <figure>
-                <img src="img/pattern-02.png" alt="">
-                <figcaption>
-                    <small>Flooring</small>
-                </figcaption>
-            </figure>
+            <button type="button" onclick="addPattern()">
+                <figure>
+                    <img src="img/pattern-02.png" alt="">
+                    <figcaption>
+                        <small>Flooring</small>
+                    </figcaption>
+                </figure>
+            </button>
 
-            <figure>
-                <img src="img/border.png" alt="">
-                <figcaption>
-                    <small>Border</small>
-                </figcaption>
-            </figure>
+            <button type="button" onclick="addBorder()">
+                <figure>
+                    <img src="img/border.png" alt="">
+                    <figcaption>
+                        <small>Border</small>
+                    </figcaption>
+                </figure>
+            </button>
 
-            <figure>
-                <img src="img/border-inner.png" alt="">
-                <figcaption>
-                    <small>Inner border</small>
-                </figcaption>
-            </figure>
+            <button type="button" onclick="addInnerBorder()">
+                <figure>
+                    <img src="img/border-inner.png" alt="">
+                    <figcaption>
+                        <small>Inner border</small>
+                    </figcaption>
+                </figure>
+            </button>
         </div>
 
         <div>
@@ -66,12 +72,12 @@
     </section>
 
     <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
         createFirstCanvas();
 
         function createFirstCanvas() {
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-
             ctx.shadowColor = 'rgba(0,0,0, 0.2)';
             ctx.shadowBlur = 5;
 
@@ -79,7 +85,34 @@
 
             ctx.fillStyle = 'transparent';
             ctx.fillRect(0, 0, 1200, 600);
+        }
 
+        function addPattern() {
+            console.log('addPattern');
+            const img3 = new Image();
+            img3.src = 'img/pattern-02.png';
+            img3.onload = function() {
+                const pattern3 = ctx.createPattern(img3, 'repeat');
+                ctx.fillStyle = pattern3;
+                ctx.fillRect(45, 45, 1110, 510);
+            };
+        }
+
+        function addInnerBorder() {
+            console.log('addInnerBorder');
+            const img2 = new Image();
+            img2.src = 'img/border-inner.png';
+            img2.onload = function() {
+                const pattern2 = ctx.createPattern(img2, 'repeat');
+                ctx.fillStyle = pattern2;
+                ctx.fillRect(25, 25, 1150, 550);
+
+                addPattern();
+            };
+        }
+
+        function addBorder() {
+            console.log('addBorder');
             const img = new Image();
             img.src = 'img/border.png';
             img.onload = function() {
@@ -87,21 +120,7 @@
                 ctx.fillStyle = pattern;
                 ctx.fillRect(5, 5, 1190, 590);
 
-                const img2 = new Image();
-                img2.src = 'img/border-inner.png';
-                img2.onload = function() {
-                    const pattern2 = ctx.createPattern(img2, 'repeat');
-                    ctx.fillStyle = pattern2;
-                    ctx.fillRect(25, 25, 1150, 550);
-
-                    const img3 = new Image();
-                    img3.src = 'img/pattern-02.png';
-                    img3.onload = function() {
-                        const pattern3 = ctx.createPattern(img3, 'repeat');
-                        ctx.fillStyle = pattern3;
-                        ctx.fillRect(45, 45, 1110, 510);
-                    };
-                };
+                addPattern();
             };
         }
 
