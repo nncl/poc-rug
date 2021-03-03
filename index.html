@@ -13,6 +13,7 @@
             text-align: center;
         }
 
+        img,
         canvas {
             max-width: 100%;
         }
@@ -27,6 +28,11 @@
             justify-content: space-between;
             max-width: 300px;
             margin: 0 auto 20px;
+        }
+
+        .margin-vertical {
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -68,6 +74,14 @@
             <div>
                 <small>Final result</small>
             </div>
+        </div>
+
+        <div class="margin-vertical">
+            <div class="margin-vertical">
+                <button type="button" onclick="merge()">Merge</button>
+            </div>
+
+            <canvas id="merge" width="904" height="576"></canvas>
         </div>
     </section>
 
@@ -122,6 +136,25 @@
 
                 addPattern();
             };
+        }
+
+        function merge() {
+            // const base64 = canvas.toDataURL();
+
+            const canvasMerge = document.getElementById('merge');
+            const context = canvasMerge.getContext("2d");
+
+            const img = new Image();
+
+            img.onload = function () {
+                context.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
+                context.drawImage(img, 0, 0);
+
+                context.transform(1, -.15, 1.2, 1, -518, 0); // -220, 200
+                context.drawImage(canvas, 166.9, 420, 926.56, 322.88);
+            }
+
+            img.src = 'img/room.png';
         }
 
         /**
