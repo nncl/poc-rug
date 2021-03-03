@@ -16,26 +16,53 @@
         canvas {
             max-width: 100%;
         }
+
+        figure {
+            margin: 0;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 300px;
+            margin: 0 auto 20px;
+        }
     </style>
 </head>
 <body>
     <h1>POC - RUG</h1>
 
     <section>
-        <h2>Flooring</h2>
-
-        <div>
-            <p>Adding pattern to canvas</p>
-
+        <div class="row">
             <figure>
                 <img src="img/pattern-02.png" alt="">
                 <figcaption>
-                    <small>Original image</small>
+                    <small>Flooring</small>
+                </figcaption>
+            </figure>
+
+            <figure>
+                <img src="img/border.png" alt="">
+                <figcaption>
+                    <small>Border</small>
+                </figcaption>
+            </figure>
+
+            <figure>
+                <img src="img/border-inner.png" alt="">
+                <figcaption>
+                    <small>Inner border</small>
                 </figcaption>
             </figure>
         </div>
 
-        <canvas id="canvas" width="1200" height="600"></canvas>
+        <div>
+            <canvas id="canvas" width="1200" height="600"></canvas>
+            <div>
+                <small>Final result</small>
+            </div>
+        </div>
     </section>
 
     <script>
