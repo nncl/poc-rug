@@ -85,6 +85,8 @@
         </div>
     </section>
 
+    <script src="http://evanw.github.io/glfx.js/glfx.js"></script>
+
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
@@ -138,7 +140,7 @@
             };
         }
 
-        function merge() {
+        function merge(canvas) {
             // const base64 = canvas.toDataURL();
 
             const canvasMerge = document.getElementById('merge');
@@ -155,6 +157,30 @@
             }
 
             img.src = 'img/room.png';
+        }
+
+        function applyPerspective() {
+            try {
+                var canvas2 = fx.canvas();
+            } catch (e) {
+                console.error(e);
+            }
+
+            // convert the image to a texture
+            var image = document.getElementById('canvas');
+            var texture = canvas2.texture(image);
+
+            // apply the perspective filter
+            canvas2
+                .draw(texture)
+                .perspective([175,156,496,55,161,279,504,330], [168,241,275,196,182,279,334,283])
+                .update();
+
+            // replace the image with the canvas2
+            // image.parentNode.insertBefore(canvas2, image);
+            // image.parentNode.removeChild(image);
+
+            merge(canvas2);
         }
 
         /**
