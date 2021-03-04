@@ -48,7 +48,7 @@
         <div class="row">
             <button type="button" onclick="addPattern()">
                 <figure>
-                    <img src="img/pattern-02.png" alt="">
+                    <img src="img/pattern.png" alt="">
                     <figcaption>
                         <small>Flooring</small>
                     </figcaption>
@@ -113,7 +113,7 @@
         function addPattern() {
             console.log('addPattern');
             const img3 = new Image();
-            img3.src = 'img/pattern-02.png';
+            img3.src = 'img/pattern.png';
             img3.onload = function() {
                 const pattern3 = ctx.createPattern(img3, 'repeat');
                 ctx.fillStyle = pattern3;
