@@ -22,6 +22,11 @@
             margin: 0;
         }
 
+        button {
+            border: none;
+            cursor: pointer;
+        }
+
         .row {
             display: flex;
             align-items: center;
@@ -78,7 +83,9 @@
 
         <div class="margin-vertical">
             <div class="margin-vertical">
-                <button type="button" onclick="applyPerspective()">Merge</button>
+                <button type="button" onclick="applyPerspective()">
+                    Create
+                </button>
             </div>
 
             <canvas id="merge" width="904" height="576"></canvas>
