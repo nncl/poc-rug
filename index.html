@@ -70,7 +70,7 @@
         </div>
 
         <div>
-            <canvas id="canvas" width="1200" height="600"></canvas>
+            <canvas id="canvas" width="904" height="576"></canvas>
             <div>
                 <small>Final result</small>
             </div>
@@ -100,7 +100,7 @@
             // ctx.transform(1, .2, .8, 1, 0, 0);
 
             ctx.fillStyle = 'transparent';
-            ctx.fillRect(0, 0, 1200, 600);
+            ctx.fillRect(0, 0, 904, 576);
         }
 
         function addPattern() {
@@ -110,7 +110,7 @@
             img3.onload = function() {
                 const pattern3 = ctx.createPattern(img3, 'repeat');
                 ctx.fillStyle = pattern3;
-                ctx.fillRect(45, 45, 1110, 510);
+                ctx.fillRect(45, 45, 814, 486);
             };
         }
 
@@ -121,7 +121,7 @@
             img2.onload = function() {
                 const pattern2 = ctx.createPattern(img2, 'repeat');
                 ctx.fillStyle = pattern2;
-                ctx.fillRect(25, 25, 1150, 550);
+                ctx.fillRect(25, 25, 854, 526);
 
                 addPattern();
             };
@@ -134,7 +134,7 @@
             img.onload = function() {
                 const pattern = ctx.createPattern(img, 'repeat');
                 ctx.fillStyle = pattern;
-                ctx.fillRect(5, 5, 1190, 590);
+                ctx.fillRect(5, 5, 894, 566);
 
                 addPattern();
             };
@@ -152,8 +152,8 @@
                 context.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
                 context.drawImage(img, 0, 0);
 
-                context.transform(1, -.15, 1.2, 1, -518, 0); // -220, 200
-                context.drawImage(canvas, 166.9, 420, 926.56, 322.88);
+                // context.transform(1, -.15, 1.2, 1, -518, 0); // -220, 200
+                context.drawImage(canvas, 0, 0);
             }
 
             img.src = 'img/room.png';
@@ -173,7 +173,7 @@
             // apply the perspective filter
             canvas2
                 .draw(texture)
-                .perspective([175,156,496,55,161,279,504,330], [168,241,275,196,182,279,334,283])
+                .perspective([175,156,496,55,161,279,504,330], [362,417,519,358,415,458,687,418])
                 .update();
 
             // replace the image with the canvas2
