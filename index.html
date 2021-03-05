@@ -74,6 +74,20 @@
             </button>
         </div>
 
+        <div class="row">
+            <div>
+                <label for="type">Border</label>
+                <select name="type" id="type" onchange="updateBorder(event)">
+                    <option>Choose</option>
+                    <option value="1">Single 25mm</option>
+                    <option value="2">Single 50mm</option>
+                    <option value="3">Double</option>
+                    <option value="4">Border + Piping</option>
+                    <option value="5">Narrow</option>
+                </select>
+            </div>
+        </div>
+
         <div>
             <canvas id="canvas" width="904" height="576"></canvas>
             <div>
@@ -110,41 +124,65 @@
             ctx.fillRect(0, 0, 904, 576);
         }
 
-        function addPattern() {
-            console.log('addPattern');
-            const img3 = new Image();
-            img3.src = 'img/pattern.png';
-            img3.onload = function() {
-                const pattern3 = ctx.createPattern(img3, 'repeat');
-                ctx.fillStyle = pattern3;
-                ctx.fillRect(45, 45, 814, 486);
-            };
+        function addPattern(type) {
+            return new Promise(resolve => {
+                console.log('addPattern');
+                const img3 = new Image();
+                img3.src = 'img/pattern.png';
+                img3.onload = function() {
+                    const pattern3 = ctx.createPattern(img3, 'repeat');
+                    ctx.fillStyle = pattern3;
+
+                    if (type === '1') {
+                        ctx.fillRect(25, 25, 854, 526);
+                    } else if (type === '5') {
+                        ctx.fillRect(10, 10, 884, 556);
+                    } else {
+                        ctx.fillRect(45, 45, 814, 486);
+                    }
+
+                    resolve();
+                };
+            })
         }
 
-        function addInnerBorder() {
-            console.log('addInnerBorder');
-            const img2 = new Image();
-            img2.src = 'img/border-inner.png';
-            img2.onload = function() {
-                const pattern2 = ctx.createPattern(img2, 'repeat');
-                ctx.fillStyle = pattern2;
-                ctx.fillRect(25, 25, 854, 526);
+        function addInnerBorder(type) {
+            return new Promise(resolve => {
+                console.log('addInnerBorder');
+                const img2 = new Image();
+                img2.src = 'img/border-inner.png';
+                img2.onload = function() {
+                    const pattern2 = ctx.createPattern(img2, 'repeat');
+                    ctx.fillStyle = pattern2;
 
-                addPattern();
-            };
+                    if (type === '4') {
+                        ctx.fillRect(35, 35, 834, 506);
+                    } else {
+                        ctx.fillRect(25, 25, 854, 526);
+                    }
+
+                    resolve();
+
+                    addPattern();
+                };
+            })
         }
 
         function addBorder() {
-            console.log('addBorder');
-            const img = new Image();
-            img.src = 'img/border.png';
-            img.onload = function() {
-                const pattern = ctx.createPattern(img, 'repeat');
-                ctx.fillStyle = pattern;
-                ctx.fillRect(5, 5, 894, 566);
+            return new Promise(resolve => {
+                console.log('addBorder');
+                const img = new Image();
+                img.src = 'img/border.png';
+                img.onload = function() {
+                    const pattern = ctx.createPattern(img, 'repeat');
+                    ctx.fillStyle = pattern;
+                    ctx.fillRect(5, 5, 894, 566);
 
-                addPattern();
-            };
+                    resolve();
+
+                    addPattern();
+                };
+            })
         }
 
         function merge(canvas) {
@@ -188,6 +226,24 @@
             // image.parentNode.removeChild(image);
 
             merge(canvas2);
+        }
+
+        async function updateBorder(e) {
+            if (!e.target.value) {
+                return;
+            }
+
+            const value = e.target.value;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            await addBorder(value);
+
+            if (value === '3' || value === '4') {
+                await addInnerBorder(value);
+            }
+
+            await addPattern(value);
         }
 
         /**
