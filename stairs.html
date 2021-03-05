@@ -45,6 +45,19 @@
     <h1>POC - RUG - Stairs</h1>
 
     <section>
+        <div class="row">
+            <div>
+                <label for="type">Border</label>
+                <select name="type" id="type" onchange="updateBorder(event)">
+                    <option>Choose</option>
+                    <option value="1">Single 25mm</option>
+                    <option value="2">Single 50mm</option>
+                    <option value="3">Double</option>
+                    <option value="4">Border + Piping</option>
+                    <option value="5">Narrow</option>
+                </select>
+            </div>
+        </div>
 
         <div>
             <canvas id="canvas" width="545" height="576"></canvas>
@@ -90,7 +103,7 @@
             ctx.fillRect(0, 0, 545, 576);
         }
 
-        function addPattern() {
+        function addPattern(type) {
             return new Promise(resolve => {
                 console.log('addPattern');
                 const img3 = new Image();
@@ -98,14 +111,21 @@
                 img3.onload = function() {
                     const pattern3 = ctx.createPattern(img3, 'repeat');
                     ctx.fillStyle = pattern3;
-                    ctx.fillRect(100, 5, 345, 576);
+
+                    if (type === '1') {
+                        ctx.fillRect(50, 5, 445, 576);
+                    } else if (type === '5') {
+                        ctx.fillRect(10, 5, 525, 576);
+                    } else {
+                        ctx.fillRect(100, 5, 345, 576);
+                    }
 
                     resolve();
                 };
             })
         }
 
-        function addInnerBorder() {
+        function addInnerBorder(type) {
             return new Promise(resolve => {
                 console.log('addInnerBorder');
                 const img2 = new Image();
@@ -113,7 +133,12 @@
                 img2.onload = function() {
                     const pattern2 = ctx.createPattern(img2, 'repeat');
                     ctx.fillStyle = pattern2;
-                    ctx.fillRect(45, 5, 455, 576);
+
+                    if (type === '4') {
+                        ctx.fillRect(85, 5, 375, 576);
+                    } else {
+                        ctx.fillRect(45, 5, 455, 576);
+                    }
 
                     resolve();
 
@@ -122,7 +147,7 @@
             })
         }
 
-        function addBorder() {
+        function addBorder(type) {
             return new Promise(resolve => {
                 console.log('addBorder');
                 const img = new Image();
@@ -134,7 +159,7 @@
 
                     resolve();
 
-                    // addPattern();
+                    addPattern(type);
 
                     roundRect(ctx, 5, 5, 535, 576, {
                         tl: 10,
@@ -298,6 +323,24 @@
                 ctx.stroke();
             }
 
+        }
+
+        async function updateBorder(e) {
+            if (!e.target.value) {
+                return;
+            }
+
+            const value = e.target.value;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            await addBorder(value);
+
+            if (value === '3' || value === '4') {
+                await addInnerBorder(value);
+            }
+
+            await addPattern(value);
         }
     </script>
 </body>
