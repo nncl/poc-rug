@@ -15,7 +15,11 @@
         #container {
             width: 545px !important;
             height: 576px !important;
-            background-image: url('img/stairs.png');
+            background-image: url('img/stairs-3.png');
+        }
+
+        canvas {
+            opacity: .2;
         }
     </style>
 </head>
@@ -228,7 +232,7 @@
     // Filter definitions
     ////////////////////////////////////////////////////////////////////////////////
 
-    var perspectiveNubs = [175, 156, 496, 55, 161, 279, 504, 330];
+    var perspectiveNubs = [0, 0, 0, 576, 545, 0, 545, 576];
     var filters = {
         'Adjust': [
             new Filter('Brightness / Contrast', 'brightnessContrast', function() {

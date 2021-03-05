@@ -65,6 +65,7 @@
     </section>
 
     <script src="http://evanw.github.io/glfx.js/glfx.js"></script>
+    <script src="https://unpkg.com/async-af/min.js"></script>
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -145,53 +146,91 @@
             })
         }
 
-        function merge(canvas) {
-            // const base64 = canvas.toDataURL();
+        let hasLoadedBackground = false;
+        function merge(canvas, clean) {
+            return new Promise(resolve => {
+                // const base64 = canvas.toDataURL();
 
-            if (!canvas) {
-                canvas = this.canvas;
-            }
+                if (!canvas) {
+                    canvas = this.canvas;
+                }
 
-            const canvasMerge = document.getElementById('merge');
-            const context = canvasMerge.getContext("2d");
+                const canvasMerge = document.getElementById('merge');
+                const context = canvasMerge.getContext("2d");
 
-            const img = new Image();
+                const img = new Image();
 
-            img.onload = function () {
-                context.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
-                context.drawImage(img, 0, 0);
+                img.onload = function () {
+                    if (clean) {
+                        context.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
+                        hasLoadedBackground = false;
+                    }
 
-                // context.transform(1, -.15, 1.2, 1, -518, 0); // -220, 200
-                // context.drawImage(canvas, 70, 395, 440, 184);
-                // context.transform(.8, 0, 0, 1, 0, 0);
-                context.drawImage(canvas, 0, 0);
-            }
+                    if (!hasLoadedBackground) {
+                        context.drawImage(img, 0, 0);
+                        hasLoadedBackground = true;
+                    }
 
-            img.src = 'img/stairs.png';
+                    // context.transform(1, -.15, 1.2, 1, -518, 0); // -220, 200
+                    // context.drawImage(canvas, 70, 395, 440, 184);
+                    context.drawImage(canvas, 0, 0);
+
+                    // let total = 1;
+                    // for (let i = 5; i > 0; i--) {
+                    //     // console.log(i);
+                    //     // context.transform(i / 100, 0, 0, i / 100, 0, 0);
+                    //     console.log(545 / i, 576 / i);
+                    //     context.drawImage(canvas, , 0, 545 * total, 576 * total);
+                    //     total -= .1;
+                    // }
+
+                    resolve();
+                }
+
+                img.src = 'img/stairs.png';
+            })
         }
 
         function applyPerspective() {
-            try {
-                var canvas2 = fx.canvas();
-            } catch (e) {
-                console.error(e);
-            }
+            const arr = [
 
-            // convert the image to a texture
-            var image = document.getElementById('canvas');
-            var texture = canvas2.texture(image);
+                [
+                    [0,0,0,576,545,0,545,576], [129,129,121,241,421,129,426,244]
+                ],
+                [
+                    [0,0,0,576,545,0,545,576], [107,237,94,400,454,239,464,407]
+                ],
+                [
+                    [175,156,496,55,161,279,504,330],
+                    [225,479,469,419,211,556,482,571]
+                ]
+            ];
 
-            // apply the perspective filter
-            canvas2
-                .draw(texture)
-                .perspective([175,156,496,55,161,279,504,330], [225,479,469,419,211,556,482,571])
-                .update();
+            AsyncAF(arr).series.forEachAF(async (i, index) => {
+                console.log(i[0], i[1])
 
-            // replace the image with the canvas2
-            // image.parentNode.insertBefore(canvas2, image);
-            // image.parentNode.removeChild(image);
+                try {
+                    var canvas2 = fx.canvas();
+                } catch (e) {
+                    console.error(e);
+                }
 
-            merge(canvas2);
+                // convert the image to a texture
+                var image = document.getElementById('canvas');
+                var texture = canvas2.texture(image);
+
+                // apply the perspective filter
+                canvas2
+                    .draw(texture)
+                    .perspective(i[0], i[1])
+                    .update();
+
+                // replace the image with the canvas2
+                // image.parentNode.insertBefore(canvas2, image);
+                // image.parentNode.removeChild(image);
+
+                await merge(canvas2, !index);
+            });
         }
 
         /**
