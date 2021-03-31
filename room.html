@@ -89,7 +89,7 @@
     </div>
 
     <div>
-        <canvas id="canvas" width="904" height="576"></canvas>
+        <!-- <canvas id="canvas" width="1536" height="840"></canvas> -->
         <div>
             <small>Final result</small>
         </div>
@@ -102,17 +102,49 @@
             </button>
         </div>
 
-        <canvas id="merge" width="904" height="576"></canvas>
+        <canvas id="merge" width="1536" height="840"></canvas>
     </div>
 </section>
 
 <script src="http://evanw.github.io/glfx.js/glfx.js"></script>
 
 <script>
-    const canvas = document.getElementById('canvas');
+    const canvas = document.createElement('canvas');
+    canvas.width = 1536;
+    canvas.height = 840;
     const ctx = canvas.getContext('2d');
 
+    const canvasMerge = document.getElementById('merge');
+    const ctxMerge = canvasMerge?.getContext('2d');
+
+    let hasPattern = false;
+    let hasBorder = false;
+    let hasInnerBorder = false;
+
     createFirstCanvas();
+    createFinalCanvas();
+
+    function createFinalCanvas() {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.onload = async () => {
+              ctxMerge?.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
+              ctx?.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
+
+              ctxMerge?.drawImage(img, 0, 0);
+
+              if (hasBorder) {
+                await addBorder();
+              }
+
+              // TODO Check if some flag is true and if it is then re add their stuff
+              // Checking within their functions if other depending flags are filled
+
+              resolve();
+            };
+            img.src = 'img/living-room.jpg';
+        })
+    }
 
     function createFirstCanvas() {
         ctx.shadowColor = 'rgba(0,0,0, 0.2)';
@@ -121,10 +153,16 @@
         // ctx.transform(1, .2, .8, 1, 0, 0);
 
         ctx.fillStyle = 'transparent';
-        ctx.fillRect(0, 0, 904, 576);
+        ctx.fillRect(0, 0, 1536, 840);
     }
 
-    function addPattern(type) {
+    async function addPattern(type) {
+        if (hasPattern) {
+            hasPattern = false;
+            await createFinalCanvas();
+            console.log('Cleared');
+        }
+
         return new Promise(resolve => {
             console.log('addPattern');
             const img3 = new Image();
@@ -133,20 +171,28 @@
                 const pattern3 = ctx.createPattern(img3, 'repeat');
                 ctx.fillStyle = pattern3;
 
-                if (type === '1') {
-                    ctx.fillRect(25, 25, 854, 526);
-                } else if (type === '5') {
-                    ctx.fillRect(10, 10, 884, 556);
+                if (hasBorder) {
+                    ctx.fillRect(45, 45, 1446, 750);
                 } else {
-                    ctx.fillRect(45, 45, 814, 486);
+                    ctx.fillRect(5, 5, 1526, 830);
                 }
+
+                hasPattern = true;
+
+                applyPerspective();
 
                 resolve();
             };
         })
     }
 
-    function addInnerBorder(type) {
+    async function addInnerBorder(type) {
+        hasInnerBorder = true;
+
+        if (hasBorder) {
+            await addBorder();
+        }
+
         return new Promise(resolve => {
             console.log('addInnerBorder');
             const img2 = new Image();
@@ -155,20 +201,23 @@
                 const pattern2 = ctx.createPattern(img2, 'repeat');
                 ctx.fillStyle = pattern2;
 
-                if (type === '4') {
-                    ctx.fillRect(35, 35, 834, 506);
-                } else {
-                    ctx.fillRect(25, 25, 854, 526);
-                }
+                ctx.fillRect(25, 25, 1486, 790);
 
                 resolve();
 
-                addPattern();
+                // addPattern();
             };
         })
     }
 
-    function addBorder() {
+    async function addBorder() {
+
+        hasBorder = true;
+
+        if (hasPattern) {
+            await addPattern();
+        }
+
         return new Promise(resolve => {
             console.log('addBorder');
             const img = new Image();
@@ -176,11 +225,11 @@
             img.onload = function() {
                 const pattern = ctx.createPattern(img, 'repeat');
                 ctx.fillStyle = pattern;
-                ctx.fillRect(5, 5, 894, 566);
+                ctx.fillRect(5, 5, 1526, 830);
+
+                // applyPerspective();
 
                 resolve();
-
-                addPattern();
             };
         })
     }
@@ -201,7 +250,7 @@
             context.drawImage(canvas, 0, 0);
         }
 
-        img.src = 'img/room.png';
+        img.src = 'img/living-room.jpg';
     }
 
     function applyPerspective() {
@@ -212,13 +261,13 @@
         }
 
         // convert the image to a texture
-        var image = document.getElementById('canvas');
+        var image = canvas;
         var texture = canvas2.texture(image);
 
         // apply the perspective filter
         canvas2
             .draw(texture)
-            .perspective([175,156,496,55,161,279,504,330], [362,417,519,358,415,458,687,418])
+            .perspective([0,0,0,840,1536,0,1536,840], [280,589,776,1018,1125,461,1865,648])
             .update();
 
         // replace the image with the canvas2

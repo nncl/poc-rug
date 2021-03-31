@@ -12,10 +12,15 @@
     <!--    <script type="text/javascript" src="http://evanw.github.io/glfx.js/media/demo.js"></script>-->
 
     <style>
+        body {
+            max-width: none;
+        }
+
         #container {
-            width: 545px !important;
-            height: 576px !important;
-            background-image: url('img/stairs.png');
+            width: 1536px !important;
+            height: 840px !important;
+            background-image: url('img/living-room.jpg');
+            overflow: visible;
         }
 
         canvas {
@@ -81,7 +86,7 @@
         // Load the texture from the image and draw it to the canvas
         var image = images[this.imageFile || 'image.jpg'];
         texture = image.texture;
-        $('#container').css({ width: 545, height: 576 });
+        $('#container').css({ width: 1536, height: 840 });
         $('#label').html('Image credit: <a href="' + image.url + '">' + image.credit + '</a>');
         canvas.draw(image.texture).update();
 
@@ -148,7 +153,7 @@
     var images = {
         'image.jpg': { credit: 'matthigh', url: 'http://www.flickr.com/photos/matthigh/2125630879/' },
         'lighthouse.jpg': { credit: 'renet', url: 'http://www.flickr.com/photos/renet/12135813/' },
-        'perspective.jpg': { credit: 'stuckincustoms', url: 'http://www.flickr.com/photos/stuckincustoms/1213760517/' }
+        'perspective-04.jpg': { credit: 'stuckincustoms', url: 'http://www.flickr.com/photos/stuckincustoms/1213760517/' }
     };
     for (var file in images) {
         var image = images[file].image = new Image();
@@ -232,7 +237,7 @@
     // Filter definitions
     ////////////////////////////////////////////////////////////////////////////////
 
-    var perspectiveNubs = [0, 0, 0, 576, 545, 0, 545, 576];
+    var perspectiveNubs = [0, 0, 0, 840, 1536, 0, 1536, 840];
     var filters = {
         'Adjust': [
             new Filter('Brightness / Contrast', 'brightnessContrast', function() {
@@ -324,7 +329,7 @@
                 this.setCode('canvas.draw(texture).bulgePinch(' + this.center.x + ', ' + this.center.y + ', ' + this.radius + ', ' + this.strength + ').update();');
             }),
             new Filter('Perspective', 'perspective', function() {
-                var w = 545, h = 576;
+                var w = 1536, h = 840;
                 this.addNub('a', perspectiveNubs[0] / w, perspectiveNubs[1] / h);
                 this.addNub('b', perspectiveNubs[2] / w, perspectiveNubs[3] / h);
                 this.addNub('c', perspectiveNubs[4] / w, perspectiveNubs[5] / h);
@@ -333,7 +338,7 @@
                 var before = perspectiveNubs;
                 var after = [this.a.x, this.a.y, this.b.x, this.b.y, this.c.x, this.c.y, this.d.x, this.d.y];
                 this.setCode('canvas.draw(texture).perspective([' + before + '], [' + after + ']).update();');
-            }, 'perspective.jpg')
+            }, 'perspective-04.jpg')
         ],
         'Fun': [
             new Filter('Ink', 'ink', function() {
