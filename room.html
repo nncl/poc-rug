@@ -46,7 +46,8 @@
 
 <section>
     <div class="row">
-        <button type="button" onclick="addPattern()">
+        <div>
+            <button type="button" onclick="setCustomPattern('img/pattern.png')">
             <figure>
                 <img src="img/pattern.png" alt="">
                 <figcaption>
@@ -55,7 +56,18 @@
             </figure>
         </button>
 
-        <button type="button" onclick="addBorder()">
+        <button type="button" onclick="setCustomPattern('img/pattern-02.png')">
+            <figure>
+                <img src="img/pattern-02.png" alt="">
+                <figcaption>
+                    <small>Flooring 2</small>
+                </figcaption>
+            </figure>
+        </button>
+        </div>
+
+        <div>
+            <button type="button" onclick="setCustomBorder('img/border.png')">
             <figure>
                 <img src="img/border.png" alt="">
                 <figcaption>
@@ -64,7 +76,18 @@
             </figure>
         </button>
 
-        <button type="button" onclick="addInnerBorder()">
+        <button type="button" onclick="setCustomBorder('img/border-02.png')">
+            <figure>
+                <img src="img/border-02.png" alt="">
+                <figcaption>
+                    <small>Border 2</small>
+                </figcaption>
+            </figure>
+        </button>
+        </div>
+
+        <div>
+            <button type="button" onclick="setCustomInnerBorder('img/border-inner.png')">
             <figure>
                 <img src="img/border-inner.png" alt="">
                 <figcaption>
@@ -72,36 +95,19 @@
                 </figcaption>
             </figure>
         </button>
-    </div>
 
-    <div class="row">
-        <div>
-            <label for="type">Border</label>
-            <select name="type" id="type" onchange="updateBorder(event)">
-                <option>Choose</option>
-                <option value="1">Single 25mm</option>
-                <option value="2">Single 50mm</option>
-                <option value="3">Double</option>
-                <option value="4">Border + Piping</option>
-                <option value="5">Narrow</option>
-            </select>
-        </div>
-    </div>
-
-    <div>
-        <!-- <canvas id="canvas" width="1536" height="840"></canvas> -->
-        <div>
-            <small>Final result</small>
+        <button type="button" onclick="setCustomInnerBorder('img/border-inner-02.png')">
+            <figure>
+                <img src="img/border-inner-02.png" alt="">
+                <figcaption>
+                    <small>Inner border 2</small>
+                </figcaption>
+            </figure>
+        </button>
         </div>
     </div>
 
     <div class="margin-vertical">
-        <div class="margin-vertical">
-            <button type="button" onclick="applyPerspective()">
-                Create
-            </button>
-        </div>
-
         <canvas id="merge" width="1536" height="840"></canvas>
     </div>
 </section>
@@ -118,8 +124,13 @@
     const ctxMerge = canvasMerge?.getContext('2d');
 
     let hasPattern = false;
+    let patternUrl = '';
+    
     let hasBorder = false;
+    let borderUrl = '';
+
     let hasInnerBorder = false;
+    let innerBorderUrl = '';
 
     createFirstCanvas();
     createFinalCanvas();
@@ -133,9 +144,9 @@
 
               ctxMerge?.drawImage(img, 0, 0);
 
-              if (hasBorder) {
-                await addBorder();
-              }
+              // if (hasBorder) {
+              //   await addBorder();
+              // }
 
               // TODO Check if some flag is true and if it is then re add their stuff
               // Checking within their functions if other depending flags are filled
@@ -156,17 +167,11 @@
         ctx.fillRect(0, 0, 1536, 840);
     }
 
-    async function addPattern(type) {
-        if (hasPattern) {
-            hasPattern = false;
-            await createFinalCanvas();
-            console.log('Cleared');
-        }
-
+    async function addPattern() {
         return new Promise(resolve => {
             console.log('addPattern');
             const img3 = new Image();
-            img3.src = 'img/pattern.png';
+            img3.src = patternUrl;
             img3.onload = function() {
                 const pattern3 = ctx.createPattern(img3, 'repeat');
                 ctx.fillStyle = pattern3;
@@ -177,9 +182,7 @@
                     ctx.fillRect(5, 5, 1526, 830);
                 }
 
-                hasPattern = true;
-
-                applyPerspective();
+                applyPerspective(); // TODO Here on on outer function?
 
                 resolve();
             };
@@ -187,16 +190,10 @@
     }
 
     async function addInnerBorder(type) {
-        hasInnerBorder = true;
-
-        if (hasBorder) {
-            await addBorder();
-        }
-
         return new Promise(resolve => {
             console.log('addInnerBorder');
             const img2 = new Image();
-            img2.src = 'img/border-inner.png';
+            img2.src = innerBorderUrl;
             img2.onload = function() {
                 const pattern2 = ctx.createPattern(img2, 'repeat');
                 ctx.fillStyle = pattern2;
@@ -204,34 +201,59 @@
                 ctx.fillRect(25, 25, 1486, 790);
 
                 resolve();
-
-                // addPattern();
             };
         })
     }
 
     async function addBorder() {
-
-        hasBorder = true;
-
-        if (hasPattern) {
-            await addPattern();
-        }
-
         return new Promise(resolve => {
             console.log('addBorder');
             const img = new Image();
-            img.src = 'img/border.png';
+            img.src = borderUrl;
             img.onload = function() {
                 const pattern = ctx.createPattern(img, 'repeat');
                 ctx.fillStyle = pattern;
                 ctx.fillRect(5, 5, 1526, 830);
 
-                // applyPerspective();
-
                 resolve();
             };
         })
+    }
+
+    async function setCustomBorder(url) {
+        hasBorder = true;
+        borderUrl = url;
+        bindAll(url);
+    }
+
+    async function setCustomPattern(url) {
+        hasPattern = true;
+        patternUrl = url;
+        bindAll();
+    }
+
+    async function setCustomInnerBorder(url) {
+        hasInnerBorder = true;
+        innerBorderUrl = url;
+        bindAll();
+    }
+
+    async function bindAll() {
+        console.log('bindAll');
+
+        await createFinalCanvas();
+
+        if (hasBorder) {
+            await addBorder();
+        }
+
+        if (hasInnerBorder) {
+            await addInnerBorder();
+        }
+
+        if (hasPattern) {
+            await addPattern();
+        }
     }
 
     function merge(canvas) {
