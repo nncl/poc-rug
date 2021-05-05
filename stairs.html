@@ -60,7 +60,7 @@
         </div>
 
         <div>
-            <canvas id="canvas" width="545" height="576"></canvas>
+            <canvas id="canvas" width="1536" height="840"></canvas>
             <div>
                 <small>Final result</small>
             </div>
@@ -73,7 +73,7 @@
                 </button>
             </div>
 
-            <canvas id="merge" width="545" height="576"></canvas>
+            <canvas id="merge" width="1536" height="840"></canvas>
         </div>
     </section>
 
@@ -100,25 +100,19 @@
             // ctx.transform(1, .2, .8, 1, 0, 0);
 
             ctx.fillStyle = 'transparent';
-            ctx.fillRect(0, 0, 545, 576);
+            ctx.fillRect(0, 0, 1536, 840);
         }
 
-        function addPattern(type) {
+        function addPattern() {
             return new Promise(resolve => {
                 console.log('addPattern');
                 const img3 = new Image();
-                img3.src = 'img/pattern.png';
+                img3.src = 'img/pattern-03.jpeg';
                 img3.onload = function() {
                     const pattern3 = ctx.createPattern(img3, 'repeat');
                     ctx.fillStyle = pattern3;
 
-                    if (type === '1') {
-                        ctx.fillRect(50, 5, 445, 576);
-                    } else if (type === '5') {
-                        ctx.fillRect(10, 5, 525, 576);
-                    } else {
-                        ctx.fillRect(100, 5, 345, 576);
-                    }
+                    ctx.fillRect(100, 5, 1336, 840);
 
                     resolve();
                 };
@@ -135,9 +129,9 @@
                     ctx.fillStyle = pattern2;
 
                     if (type === '4') {
-                        ctx.fillRect(85, 5, 375, 576);
+                        ctx.fillRect(85, 5, 375, 840);
                     } else {
-                        ctx.fillRect(45, 5, 455, 576);
+                        ctx.fillRect(45, 5, 1446, 840);
                     }
 
                     resolve();
@@ -155,15 +149,15 @@
                 img.onload = function() {
                     const pattern = ctx.createPattern(img, 'repeat');
                     ctx.fillStyle = pattern;
-                    // ctx.fillRect(5, 5, 535, 576);
+                    // ctx.fillRect(5, 5, 535, 840);
 
                     resolve();
 
                     addPattern(type);
 
-                    roundRect(ctx, 5, 5, 535, 576, {
-                        tl: 10,
-                        tr: 10,
+                    roundRect(ctx, 5, 5, 1526, 840, {
+                        tl: 30,
+                        tr: 60,
                         bl: 0,
                         br: 0
                     }, true);
@@ -204,37 +198,33 @@
                     // for (let i = 5; i > 0; i--) {
                     //     // console.log(i);
                     //     // context.transform(i / 100, 0, 0, i / 100, 0, 0);
-                    //     console.log(545 / i, 576 / i);
-                    //     context.drawImage(canvas, , 0, 545 * total, 576 * total);
+                    //     console.log(1536 / i, 840 / i);
+                    //     context.drawImage(canvas, , 0, 1536 * total, 840 * total);
                     //     total -= .1;
                     // }
 
                     resolve();
                 }
 
-                img.src = 'img/stairs.png';
+                img.src = 'img/stairs.jpg';
             })
         }
 
         function applyPerspective() {
             const arr = [
-                [
-                    [0,0,0,576,545,0,545,576], [159,0,156,50,381,0,383,51]
-                ],
-                [
-                    [0,0,0,576,545,0,545,576], [147,47,142,133,399,50,401,133]
-                ],
-                [
-                    [0,0,0,576,545,0,545,576], [129,129,121,241,421,129,426,244]
-                ],
-                [
-                    [0,0,0,576,545,0,545,576], [107,237,94,400,454,239,464,407]
-                ],
-                [
-                    [175,156,496,55,161,279,504,330],
-                    [225,479,469,419,211,556,482,571]
-                ]
-            ];
+          [
+            [0,0,0,840,1536,0,1536,840], [444,-5,442,330,1080,-5,1074,335]
+          ],
+          [
+            [0,0,0,840,1536,0,1536,840], [411,107,395,533,1125,107,1123,527]
+          ],
+          [
+            [0,0,0,840,1536,0,1536,840], [369,330,339,781,1189,337,1198,804]
+          ],
+          [
+            [0,0,0,840,1536,0,1536,840], [298,639,270,1224,1282,641,1286,1248]
+          ]
+        ];
 
             AsyncAF(arr).series.forEachAF(async (i, index) => {
                 try {
