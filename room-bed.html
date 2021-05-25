@@ -162,7 +162,7 @@
 
               resolve();
             };
-            img.src = 'img/room-04.png';
+            img.src = 'img/bed-room-04.png';
         })
     }
 
@@ -181,7 +181,7 @@
             console.log('addPattern');
             const img3 = new Image();
             // img3.src = patternUrl;
-            img3.src = 'img/room-02.png';
+            img3.src = 'img/bed-room-03.png';
             
             applyPerspective(); // TODO Here on on outer function?
 
@@ -214,7 +214,8 @@
                 const pattern2 = ctx.createPattern(img2, 'repeat');
                 ctx.fillStyle = pattern2;
 
-                ctx.fillRect(25, 25, 1486, 790);
+                // ctx.fillRect(15, 15, 1486, 790);
+                ctx.fillRect(25, 15, 1466, 790);
 
                 resolve();
             };
@@ -294,10 +295,10 @@
                 // context.clearRect(0, 0, canvasMerge.width, canvasMerge.height);
                 context.drawImage(newImg, 0, 0);
             }
-            newImg.src = 'img/room-02.png';
+            newImg.src = 'img/bed-room-03.png';
         }
 
-        img.src = 'img/room-04.png';
+        img.src = 'img/bed-room-04.png';
     }
 
     function applyPerspective() {
@@ -316,7 +317,7 @@
             .draw(texture)
             // .perspective([0,0,0,840,1536,0,1536,840], [280,589,776,1018,1125,461,1865,648])
             // .perspective([0,0,0,840,1536,0,1536,840], [328,474,6,817,1161,474,1579,831])
-            .perspective([0,0,0,840,1536,0,1536,840], [321,475,-20,826,1166,475,1576,832])
+            .perspective([0,0,0,840,1536,0,1536,840], [733,662,1489,1014,995,541,1605,717])
             .update();
 
         // replace the image with the canvas2

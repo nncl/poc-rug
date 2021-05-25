@@ -19,12 +19,17 @@
         #container {
             width: 1536px !important;
             height: 840px !important;
-            background-image: url('img/living-room.jpg');
+            background-image: url('img/shape-stairs.png');
             overflow: visible;
         }
 
+        #nubs {
+            /*width: 2000%;*/
+            height: 2000%;
+        }
+
         canvas {
-            opacity: .6;
+            opacity: .3;
         }
     </style>
 </head>
@@ -153,7 +158,7 @@
     var images = {
         'image.jpg': { credit: 'matthigh', url: 'http://www.flickr.com/photos/matthigh/2125630879/' },
         'lighthouse.jpg': { credit: 'renet', url: 'http://www.flickr.com/photos/renet/12135813/' },
-        'perspective-06.png': { credit: 'stuckincustoms', url: 'http://www.flickr.com/photos/stuckincustoms/1213760517/' }
+        'perspective-07.png': { credit: 'stuckincustoms', url: 'http://www.flickr.com/photos/stuckincustoms/1213760517/' }
     };
     for (var file in images) {
         var image = images[file].image = new Image();
@@ -338,7 +343,7 @@
                 var before = perspectiveNubs;
                 var after = [this.a.x, this.a.y, this.b.x, this.b.y, this.c.x, this.c.y, this.d.x, this.d.y];
                 this.setCode('canvas.draw(texture).perspective([' + before + '], [' + after + ']).update();');
-            }, 'perspective-06.png')
+            }, 'perspective-07.png')
         ],
         'Fun': [
             new Filter('Ink', 'ink', function() {
