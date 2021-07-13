@@ -89,8 +89,8 @@
 
         async function init() {
             await addBorder();
-            await addInnerBorder();
-            await addPattern();
+            // await addInnerBorder();
+            // await addPattern();
         }
 
         function createFirstCanvas() {
@@ -112,7 +112,7 @@
                     const pattern3 = ctx.createPattern(img3, 'repeat');
                     ctx.fillStyle = pattern3;
 
-                    ctx.fillRect(100, 5, 1336, 840);
+                    ctx.fillRect(100, 35, 1336, 840 - 65);
 
                     resolve();
                 };
@@ -145,7 +145,7 @@
             return new Promise(resolve => {
                 console.log('addBorder');
                 const img = new Image();
-                img.src = 'img/border.png';
+                img.src = 'img/border-atlanta.jpeg';
                 img.onload = function() {
                     const pattern = ctx.createPattern(img, 'repeat');
                     ctx.fillStyle = pattern;
@@ -153,14 +153,72 @@
 
                     resolve();
 
-                    addPattern(type);
+                    // addPattern(type); // FIXME
 
                     roundRect(ctx, 5, 5, 1526, 840, {
-                        tl: 30,
-                        tr: 60,
+                        tl: 0, // FIXME 30
+                        tr: 0, // FIXME 60
                         bl: 0,
                         br: 0
                     }, true);
+
+                    /**
+                     * TODO Update context as a new canvas to stay below
+                     */
+
+                    ctx.fillStyle = 'orange';
+                    // ctx.fillStyle = pattern;
+
+                    const xAxis = 10;
+                    const yAxis = 390;
+
+                    const rotation = Math.PI / 4;
+
+                    const width = 1536 - 10; // 1536 - 10
+                    const height = 1536 - 10; // 1536 - 10
+
+                    const horizontalCenter = xAxis + width / 2;
+                    const verticalCenter = yAxis + height / 2;
+
+                    // INSIDE CANVAS
+                    const fakeCanvasCustomSize = document.createElement('canvas');
+                    fakeCanvasCustomSize.width = img.width;
+                    fakeCanvasCustomSize.height = img.height;
+
+                    const fakeCtxCanvasCustomSize = fakeCanvasCustomSize.getContext('2d');
+
+                    const horizontalCenterFake = 0 + img.width / 2;
+                    const verticalCenterFake = 0 + img.height / 2;
+
+                    fakeCtxCanvasCustomSize.translate(horizontalCenterFake, verticalCenterFake);
+                    fakeCtxCanvasCustomSize.rotate(rotation);
+                    fakeCtxCanvasCustomSize.translate(-horizontalCenterFake, -verticalCenterFake);
+
+                    // TODO WHAT IF TRY TO ROTATE THE IMAGE?
+                    fakeCtxCanvasCustomSize?.drawImage(img, 0, 0, img.width, img.height);
+
+                    // document.body.appendChild(fakeCanvasCustomSize)
+
+                    const pattern2 = ctx?.createPattern(fakeCanvasCustomSize, 'repeat');
+                    ctx.fillStyle = pattern2;
+                    // END INSIDE CANVAS
+
+                    ctx.translate(horizontalCenter, verticalCenter);
+                    ctx.rotate(rotation);
+                    ctx.translate(-horizontalCenter, -verticalCenter);
+
+                    roundRect(ctx, xAxis, yAxis, width, height, {
+                        tl: 0, // FIXME 30
+                        tr: 0, // FIXME 60
+                        bl: 0,
+                        br: 0
+                    }, true);
+
+                    // TODO Back to regular flow
+                    // ctx.translate(horizontalCenter, verticalCenter);
+                    // ctx.rotate(-(Math.PI / 4));
+                    // ctx.translate(-horizontalCenter, -verticalCenter);
+                    // addPattern(type); // FIXME
                 };
             })
         }
