@@ -76,9 +76,9 @@
         </div>
 
         <div>
-            <button type="button" onclick="setCustomBorder('img/border.png')">
+            <button type="button" onclick="setCustomBorder('img/border-atlanta-2.png')">
             <figure>
-                <img src="img/border.png" alt="">
+                <img src="img/border-atlanta-2.png" alt="">
                 <figcaption>
                     <small>Border</small>
                 </figcaption>
@@ -231,6 +231,25 @@
                 const pattern = ctx.createPattern(img, 'repeat');
                 ctx.fillStyle = pattern;
                 ctx.fillRect(5, 5, 1526, 830);
+
+                const innerCanvas = document.createElement('canvas');
+                innerCanvas.width = 1536;
+                innerCanvas.height = 1536;
+
+                const innerCanvasCtx = innerCanvas.getContext('2d');
+
+                const horizontalCenterFake = 0 + 1536 / 2; // x + w / 2
+                const verticalCenterFake = 0 + 1536 / 2; // y + h / 2
+
+                innerCanvasCtx.translate(horizontalCenterFake, verticalCenterFake);
+                innerCanvasCtx.rotate(Math.PI / 2);
+                innerCanvasCtx.translate(-horizontalCenterFake, -verticalCenterFake);
+
+                innerCanvasCtx.fillStyle = pattern; // FIXME
+                // innerCanvasCtx.fillStyle = 'orange'; // FIXME
+                innerCanvasCtx.fillRect(0, 0, 1536, 1536);
+
+                ctx.drawImage(innerCanvas, 5, 5, 1526, 100);
 
                 resolve();
             };
